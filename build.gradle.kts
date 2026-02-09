@@ -50,6 +50,10 @@ tasks.register<Test>("unitTest") {
     description = "Runs unit tests."
     group = "verification"
 
+    val testSourceSet = sourceSets.test.get()
+    testClassesDirs = testSourceSet.output.classesDirs
+    classpath = testSourceSet.runtimeClasspath
+
     filter {
         excludeTestsMatching("*FunctionalTest")
     }
@@ -59,9 +63,11 @@ tasks.register<Test>("functionalTest") {
     description = "Runs functional tests."
     group = "verification"
 
-    filter {
-        excludeTestsMatching("*FunctionalTest")
-    }
+    val testSourceSet = sourceSets.test.get()
+    testClassesDirs = testSourceSet.output.classesDirs
+    classpath = testSourceSet.runtimeClasspath
+
+    filter { includeTestsMatching("*FunctionalTest") }
 }
 
 tasks.withType<Test>().configureEach {
